@@ -34,13 +34,6 @@ public class Settings extends AppCompatActivity {
                 openMainActivity();
             }
         });
-
-        sendTestEmailsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendMail();
-            }
-        });
         mSetMailsDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,11 +46,7 @@ public class Settings extends AppCompatActivity {
         Intent intent = new Intent(this,EmailSettings.class);
         startActivity(intent);
     }
-    private void sendMail(){
-        //Send Mail
-        JavaMailAPI javaMailAPI = new JavaMailAPI(this,testMailContact,testMailSubject,testMailMessage);
-        javaMailAPI.execute();
-    }
+
 
     private void openMainActivity(){
         Intent intent = new Intent(this, SenzorValueActivity.class);

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,6 +18,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ekn.gruzer.gaugelibrary.HalfGauge;
 import com.ekn.gruzer.gaugelibrary.Range;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,12 +28,16 @@ import org.json.JSONObject;
 
 public class SenzorValueActivity extends AppCompatActivity {
 
+    private static final String URL = "https://thingspeak.com/channels/2118120/fields/1.json?api_key=DGHTAT9MKCKX4140&results=2";
+
     private TextView mSensorValueTextView;
     private Button mRefreshButton;
     private Button mEmailSettingsButton;
     private HalfGauge mHalfGauge;
     private Button mChartButton;
     private String sensorValue = "0";
+
+    private EmailDto emailDto = new EmailDto();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +73,12 @@ public class SenzorValueActivity extends AppCompatActivity {
         mHalfGauge.setMinValue(0);
         mHalfGauge.setMaxValue(200);
 
-        String url = "https://thingspeak.com/channels/2118120/fields/1.json?api_key=DGHTAT9MKCKX4140&results=2";
-        getRequest(url);
+        getRequest(URL);
 
         mRefreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "https://thingspeak.com/channels/2118120/fields/1.json?api_key=DGHTAT9MKCKX4140&results=2";
-                getRequest(url);
+                getRequest(URL);
             }
         });
 
@@ -90,6 +95,31 @@ public class SenzorValueActivity extends AppCompatActivity {
                 openChartAcitvity();
             }
         });
+        Intent intent = getIntent();
+
+        emailDto.setEmail(intent.getStringExtra("emailAddress"));
+        emailDto.setMessage(intent.getStringExtra("emailMessage"));
+        emailDto.setSubject(intent.getStringExtra("emailSubject"));
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getRequest(URL);
+                checkifThresholdIsReached();
+            }
+        },5000);
+    }
+
+    private void checkifThresholdIsReached(){
+        if(Integer.parseInt(sensorValue) > 40){
+            sendMail(emailDto.getEmail(),emailDto.getSubject(),emailDto.getMessage());
+        }
+    }
+    private void sendMail(String mailContact, String mailSubject, String mailMessage){
+        //Send Mail
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this,mailContact,mailSubject,mailMessage);
+        javaMailAPI.execute();
     }
 
     private void openChartAcitvity(){

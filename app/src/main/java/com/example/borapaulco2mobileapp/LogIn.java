@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LogIn extends AppCompatActivity {
+    private static final String DEFAULT_EMAIL_MESSAGE = "The threshold was reached, you must check the room.";
+    private static final String DEFAULT_EMAIL_SUBJECT = "CO level RISING";
     private Button mLoginButton;
     private EditText mEmailEditText;
     private EditText mPasswordEditText;
@@ -43,7 +45,10 @@ public class LogIn extends AppCompatActivity {
                     Toast.makeText(LogIn.this, "Please fill all the fields",Toast.LENGTH_SHORT).show();
                 }else
                     if (db.loginCheck(email,password)){
-                        Intent intent = new Intent(LogIn.this, SenzorValueActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), SenzorValueActivity.class);
+                        intent.putExtra("emailAddress", mEmailEditText.getText().toString());
+                        intent.putExtra("emailMessage",DEFAULT_EMAIL_MESSAGE);
+                        intent.putExtra("emailSubject",DEFAULT_EMAIL_SUBJECT);
                         startActivity(intent);
                     }
                     else
