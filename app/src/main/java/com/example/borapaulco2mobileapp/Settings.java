@@ -8,25 +8,29 @@ import android.view.View;
 import android.widget.Button;
 
 public class Settings extends AppCompatActivity {
+    private final static String TEST_MAIL_SUBJECT = "Test Emaiil";
+
+    private static final String TEST_MAIL_MESSAGE = "This is a test e-mail from CO mobile application. Don't worry, you are safe!";
 
     private Button backButton;
-    private Button sendTestEmailsButton;
+    private Button mSendTestEmailsButton;
     private Button mSetMailsDetails;
-    private final static String testMailSubject = "Mere mailurili?";
+    private Button mSetThreshold;
 
-    private final static String testMailContact = "alex_roncea@yahoo.com";
-
-    private static final String testMailMessage = "asta-i mail de la licenta ba, il primisi?";
-
+    private String mailContact;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_email_sender);
+        setContentView(R.layout.activity_settings);
         backButton = findViewById(R.id.backButton);
 
-        sendTestEmailsButton = findViewById(R.id.sendEmailTest);
+        mSendTestEmailsButton = findViewById(R.id.sendEmailTest);
         mSetMailsDetails = findViewById(R.id.addNewAddress);
+        mSetThreshold = findViewById(R.id.setThresholdButton);
 
+        Intent intent = getIntent();
+
+        mailContact = intent.getStringExtra("emailAddress");
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +44,20 @@ public class Settings extends AppCompatActivity {
                 openEmailSettings();
             }
         });
+
+        mSendTestEmailsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendEmail();
+            }
+        });
+
+        mSetThreshold.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTresholdActivity();
+            }
+        });
     }
 
     private void openEmailSettings(){
@@ -47,6 +65,16 @@ public class Settings extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void openTresholdActivity(){
+        Intent intent = new Intent(getApplicationContext(), ThresholdActivity.class);
+        startActivity(intent);
+    }
+
+    private void sendEmail(){
+            //Send Mail
+            JavaMailAPI javaMailAPI = new JavaMailAPI(this,mailContact,TEST_MAIL_SUBJECT,TEST_MAIL_MESSAGE);
+            javaMailAPI.execute();
+    }
 
     private void openMainActivity(){
         Intent intent = new Intent(this, SenzorValueActivity.class);

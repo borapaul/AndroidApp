@@ -25,4 +25,5 @@
     <string name="confir_password">Confirm Password</string>
     <string name="password">Password</string>
     <string name="setTheValues"> Set </string>
+    <string name= "dateOfTheMail"> Date </string>
 </resources>

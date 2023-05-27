@@ -82,10 +82,12 @@ public class SenzorValueActivity extends AppCompatActivity {
             }
         });
 
+        Intent intent = getIntent();
+
         mEmailSettingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openMailSettingsActivity();
+                openMailSettingsActivity(intent.getStringExtra("emailAddress"));
             }
         });
 
@@ -95,7 +97,6 @@ public class SenzorValueActivity extends AppCompatActivity {
                 openChartAcitvity();
             }
         });
-        Intent intent = getIntent();
 
         emailDto.setEmail(intent.getStringExtra("emailAddress"));
         emailDto.setMessage(intent.getStringExtra("emailMessage"));
@@ -128,8 +129,9 @@ public class SenzorValueActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void openMailSettingsActivity(){
+    private void openMailSettingsActivity(String mailContact){
         Intent intent = new Intent(this, Settings.class);
+        intent.putExtra("emailAddress", mailContact);
         startActivity(intent);
     }
 
