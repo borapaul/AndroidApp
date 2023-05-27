@@ -17,13 +17,16 @@
     <string name="chartButton">Chart</string>
     <string name="log_in">Log In</string>
     <string name="display_data">Display Data</string>
-    <string name="setTreshold">Set Threshold</string>
+    <string name="setThreshold">Set Threshold</string>
     <string name="contact">Contact</string>
     <string name="register">Register</string>
     <string name="counted_values">Counted Values</string>
     <string name="log_in_string">Log In</string>
-    <string name="confir_password">Confirm Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="password">Password</string>
     <string name="setTheValues"> Set </string>
     <string name= "dateOfTheMail"> Date </string>
+    <string name= "threshold"> Threshold </string>
+    <string name= "emailSwitch">Turn of Emails</string>
+    <string name= "idTextView" > ID</string>
 </resources>

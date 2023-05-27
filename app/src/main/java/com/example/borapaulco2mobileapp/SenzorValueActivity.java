@@ -25,10 +25,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class SenzorValueActivity extends AppCompatActivity {
 
     private static final String URL = "https://thingspeak.com/channels/2118120/fields/1.json?api_key=DGHTAT9MKCKX4140&results=2";
+    private static final int DEFAULT_THRESHOLD = 35;
 
     private TextView mSensorValueTextView;
     private Button mRefreshButton;
@@ -36,6 +42,8 @@ public class SenzorValueActivity extends AppCompatActivity {
     private HalfGauge mHalfGauge;
     private Button mChartButton;
     private String sensorValue = "0";
+
+    private List<DataTableDetails> dataTableDetailsList = new ArrayList<>();
 
     private EmailDto emailDto = new EmailDto();
 
@@ -113,8 +121,14 @@ public class SenzorValueActivity extends AppCompatActivity {
     }
 
     private void checkifThresholdIsReached(){
-        if(Integer.parseInt(sensorValue) > 40){
+        if(Integer.parseInt(sensorValue) > DEFAULT_THRESHOLD){
             sendMail(emailDto.getEmail(),emailDto.getSubject(),emailDto.getMessage());
+            DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+            DataTableDetails dataTableDetails = new DataTableDetails();
+            dataTableDetails.setmThreshold(String.valueOf(DEFAULT_THRESHOLD));
+            dataTableDetails.setmContact(emailDto.getEmail());
+            dataTableDetails.setmDate(dateFormat.format(System.currentTimeMillis()));
+            dataTableDetailsList.add(dataTableDetails);
         }
     }
     private void sendMail(String mailContact, String mailSubject, String mailMessage){
@@ -132,6 +146,10 @@ public class SenzorValueActivity extends AppCompatActivity {
     private void openMailSettingsActivity(String mailContact){
         Intent intent = new Intent(this, Settings.class);
         intent.putExtra("emailAddress", mailContact);
+        intent.putExtra("listSize", dataTableDetailsList.size());
+        for(int i = 0 ; i < dataTableDetailsList.size(); i++){
+            intent.putExtra(String.valueOf(i),dataTableDetailsList.get(i));
+        }
         startActivity(intent);
     }
 

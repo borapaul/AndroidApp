@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 
@@ -18,6 +19,10 @@ public class Settings extends AppCompatActivity {
     private Button mSetThreshold;
 
     private String mailContact;
+
+    private DataTableDetails dataTableDetails;
+
+    private int listSize;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +36,8 @@ public class Settings extends AppCompatActivity {
         Intent intent = getIntent();
 
         mailContact = intent.getStringExtra("emailAddress");
+
+        listSize = intent.getIntExtra("listSize", 0);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +74,12 @@ public class Settings extends AppCompatActivity {
 
     private void openTresholdActivity(){
         Intent intent = new Intent(getApplicationContext(), ThresholdActivity.class);
+        Intent activityIntent = getIntent();
+        intent.putExtra("listSize", listSize);
+        for(int i = 0 ; i < listSize; i++){
+            DataTableDetails dataTableDetailsFromIntent = activityIntent.getParcelableExtra(String.valueOf(i));
+            intent.putExtra(String.valueOf(i),dataTableDetailsFromIntent);
+        }
         startActivity(intent);
     }
 
