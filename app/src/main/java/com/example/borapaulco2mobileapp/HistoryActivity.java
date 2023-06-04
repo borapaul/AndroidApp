@@ -4,26 +4,35 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ThresholdActivity extends AppCompatActivity {
-
+public class HistoryActivity extends AppCompatActivity {
     private TableLayout mTableLayout;
+    private Button mBackButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_threshold);
+        setContentView(R.layout.activity_history);
         mTableLayout = findViewById(R.id.mainTable);
+        mBackButton = findViewById(R.id.backToSettings);
+
+
+
         Intent intent = getIntent();
         TableRow tableRow = new TableRow(this);
-        setHeader("id","Contact", "Threshold", "Date",tableRow);
+        setHeader("id", "Contact", "Threshold", "Date", tableRow);
 
-        int listSize = intent.getIntExtra("listSize",0);
-        for(int i = 0; i<listSize; i++ ){
+        int listSize = intent.getIntExtra("listSize", 0);
+        for (int i = 0; i < listSize; i++) {
             DataTableDetails dataTableDetails = intent.getParcelableExtra(String.valueOf(i));
             TableRow tableRowForData = new TableRow(this);
             setHeader(
@@ -34,10 +43,22 @@ public class ThresholdActivity extends AppCompatActivity {
                     tableRowForData);
         }
 
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMainActivity();
+            }
+        });
+
+    }
+
+    private void openMainActivity() {
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
     }
 
 
-    private void setHeader(String id , String contact, String threshold , String date, TableRow mTablewRow) {
+    private void setHeader(String id, String contact, String threshold, String date, TableRow mTablewRow) {
 
         TextView idTextView = new TextView(this);
         idTextView.setText(id);

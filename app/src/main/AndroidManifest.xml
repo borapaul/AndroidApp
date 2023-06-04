@@ -14,7 +14,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".ThresholdActivity"
+            android:name=".HistoryActivity"
             android:exported="false" />
         <activity
             android:name=".EmailSettings"
@@ -39,6 +39,7 @@
             android:exported="false" />
         <activity
             android:name=".SenzorValueActivity"
+            android:noHistory="true"
             android:exported="false" />
     </application>
 

@@ -1,14 +1,25 @@
 package com.example.borapaulco2mobileapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.nfc.tech.IsoDep;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Lifecycle;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,8 +29,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ekn.gruzer.gaugelibrary.HalfGauge;
 import com.ekn.gruzer.gaugelibrary.Range;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,36 +37,113 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class SenzorValueActivity extends AppCompatActivity {
 
     private static final String URL = "https://thingspeak.com/channels/2118120/fields/1.json?api_key=DGHTAT9MKCKX4140&results=2";
-    private static final int DEFAULT_THRESHOLD = 35;
 
     private TextView mSensorValueTextView;
     private Button mRefreshButton;
     private Button mEmailSettingsButton;
     private HalfGauge mHalfGauge;
     private Button mChartButton;
+    private EditText mThresholdValueText;
+    private Switch mIsSendingEmails;
     private String sensorValue = "0";
 
-    private List<DataTableDetails> dataTableDetailsList = new ArrayList<>();
+    private static final int DEFAULT_THRESHOLD = 35;
 
+    private static final boolean IS_SENDING_EMAILS = true;
+    private int threshold = DEFAULT_THRESHOLD;
+    private boolean isSendingEmails = IS_SENDING_EMAILS;
+    private List<DataTableDetails> dataTableDetailsList = new ArrayList<>();
     private EmailDto emailDto = new EmailDto();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+
 
         mChartButton = findViewById(R.id.chartButton);
         mSensorValueTextView = (TextView) findViewById(R.id.sensorValue);
         mRefreshButton = findViewById(R.id.refreshButton);
         mEmailSettingsButton = findViewById(R.id.emailSettings);
         mHalfGauge = findViewById(R.id.halfGauge);
+        mIsSendingEmails = findViewById(R.id.switchEmailSending);
+        mThresholdValueText = findViewById(R.id.thresholdValueText);
 
+        gaugeSettings();
+        getRequest(URL);
+
+        mRefreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getRequest(URL);
+            }
+        });
+
+        mEmailSettingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMailSettingsActivity(getIntent().getStringExtra("emailAddress"));
+            }
+        });
+
+        mChartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openChartAcitvity();
+            }
+        });
+
+        emailDto.setEmail(intent.getStringExtra("emailAddress"));
+        emailDto.setMessage(intent.getStringExtra("emailMessage"));
+        emailDto.setSubject(intent.getStringExtra("emailSubject"));
+        mThresholdValueText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                threshold = Integer.parseInt(mThresholdValueText.getText().toString());
+            }
+        });
+        mIsSendingEmails.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    isSendingEmails = false;
+                }else {
+                    isSendingEmails = true;
+                }
+            }
+        });
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getRequest(URL);
+                checkifThresholdIsReached(threshold, isSendingEmails);
+                handler.postDelayed(this, 5000);
+            }
+        }, 5000);
+    }
+
+    private void gaugeSettings() {
         Range firstPart = new Range();
         firstPart.setColor(Color.parseColor("#a3c6ff"));
         firstPart.setFrom(0);
@@ -80,81 +166,49 @@ public class SenzorValueActivity extends AppCompatActivity {
         mHalfGauge.setValueColor(Color.WHITE);
         mHalfGauge.setMinValue(0);
         mHalfGauge.setMaxValue(200);
-
-        getRequest(URL);
-
-        mRefreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getRequest(URL);
-            }
-        });
-
-        Intent intent = getIntent();
-
-        mEmailSettingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMailSettingsActivity(intent.getStringExtra("emailAddress"));
-            }
-        });
-
-        mChartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openChartAcitvity();
-            }
-        });
-
-        emailDto.setEmail(intent.getStringExtra("emailAddress"));
-        emailDto.setMessage(intent.getStringExtra("emailMessage"));
-        emailDto.setSubject(intent.getStringExtra("emailSubject"));
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getRequest(URL);
-                checkifThresholdIsReached();
-                handler.postDelayed(this,300000);
-            }
-        },300000);
     }
 
-    private void checkifThresholdIsReached(){
-        if(Integer.parseInt(sensorValue) > DEFAULT_THRESHOLD){
-            sendMail(emailDto.getEmail(),emailDto.getSubject(),emailDto.getMessage());
+    private void checkifThresholdIsReached(int threshold, boolean isSendingEmails) {
+
+        if (checkIfSendEmails(threshold, isSendingEmails)) {
+            sendMail(emailDto.getEmail(), emailDto.getSubject(), emailDto.getMessage());
             DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
             DataTableDetails dataTableDetails = new DataTableDetails();
-            dataTableDetails.setmThreshold(String.valueOf(DEFAULT_THRESHOLD));
+            dataTableDetails.setmThreshold(String.valueOf(threshold));
             dataTableDetails.setmContact(emailDto.getEmail());
             dataTableDetails.setmDate(dateFormat.format(System.currentTimeMillis()));
             dataTableDetailsList.add(dataTableDetails);
         }
     }
-    private void sendMail(String mailContact, String mailSubject, String mailMessage){
-        //Send Mail
-        JavaMailAPI javaMailAPI = new JavaMailAPI(this,mailContact,mailSubject,mailMessage);
-        javaMailAPI.execute();
+
+    private boolean checkIfSendEmails(int threshold, boolean isSendingEmails) {
+        return (Integer.parseInt(sensorValue) > threshold && isSendingEmails);
     }
 
-    private void openChartAcitvity(){
+    private void sendMail(String mailContact, String mailSubject, String mailMessage) {
+            JavaMailAPI javaMailAPI = new JavaMailAPI(this, mailContact, mailSubject, mailMessage);
+            javaMailAPI.execute();
+
+    }
+
+    private void openChartAcitvity() {
         Intent intent = new Intent(this, ChartOfDataActivity.class);
         intent.putExtra("sensorValue", sensorValue);
         startActivity(intent);
     }
 
-    private void openMailSettingsActivity(String mailContact){
+    private void openMailSettingsActivity(String mailContact) {
         Intent intent = new Intent(this, Settings.class);
         intent.putExtra("emailAddress", mailContact);
         intent.putExtra("listSize", dataTableDetailsList.size());
-        for(int i = 0 ; i < dataTableDetailsList.size(); i++){
-            intent.putExtra(String.valueOf(i),dataTableDetailsList.get(i));
+        for (int i = 0; i < dataTableDetailsList.size(); i++) {
+            intent.putExtra(String.valueOf(i), dataTableDetailsList.get(i));
         }
         startActivity(intent);
+        finish();
     }
 
-    private void getRequest(String url){
+    private void getRequest(String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(
                 Request.Method.GET,
@@ -174,15 +228,16 @@ public class SenzorValueActivity extends AppCompatActivity {
                             mSensorValueTextView.setText(sensorValue);
                             mHalfGauge.setValue(Double.parseDouble(sensorValue));
                         } catch (JSONException e) {
-                            System.out.println("Exception at parsing json");;
+                            System.out.println("Exception at parsing json");
+                            ;
                         }
                     }
                 }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle error
-                    }
-                });
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Handle error
+            }
+        });
         queue.add(stringRequest);
     }
 
