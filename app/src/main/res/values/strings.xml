@@ -27,6 +27,6 @@
     <string name="setTheValues"> Set </string>
     <string name= "dateOfTheMail"> Date </string>
     <string name= "threshold"> Threshold </string>
-    <string name= "emailSwitch">Turn of Emails</string>
+    <string name= "emailSwitch">Turn off Emails</string>
     <string name= "idTextView" > ID</string>
 </resources>

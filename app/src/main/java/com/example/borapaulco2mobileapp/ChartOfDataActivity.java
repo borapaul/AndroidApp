@@ -19,18 +19,27 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.material.transition.MaterialSharedAxis;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class ChartOfDataActivity extends AppCompatActivity {
     private static String url = "https://thingspeak.com/channels/2118120/fields/1.json?api_key=DGHTAT9MKCKX4140&results=2";
@@ -54,6 +63,21 @@ public class ChartOfDataActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_chart_of_data);
         mLineChart = (LineChart)findViewById(R.id.senzorValueLineChart);
+        mLineChart.setTouchEnabled(true);
+        mLineChart.setPinchZoom(true);
+
+        mLineChart.getXAxis().setValueFormatter(new ValueFormatter() {
+
+            private final SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm", Locale.ENGLISH);
+
+            @Override
+            public String getFormattedValue(float value) {
+
+                long millis = TimeUnit.HOURS.toMillis((long) value);
+                return mFormat.format(new Date(millis));
+            }
+        });
+
         mBackToMain = findViewById(R.id.backToMainActivity);
         mBackToMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,13 +92,13 @@ public class ChartOfDataActivity extends AppCompatActivity {
             public void run() {
                 getRequest(url);
                 lineDataSet = new LineDataSet(dataArrayList,"Sensor Values");
-                handler.postDelayed(this, 1000);
                 LineData lineData = new LineData(new LineDataSet(getIntent().getParcelableExtra(sensorValue),"Sensor Values"));
                 lineData.addDataSet(lineDataSet);
                 mLineChart.setData(lineData);
                 mLineChart.invalidate();
+                handler.postDelayed(this, 5000);
             }
-        },1000);
+        },5000);
     }
     private void openMainActivity(){
         Intent intent = new Intent(this, SenzorValueActivity.class);

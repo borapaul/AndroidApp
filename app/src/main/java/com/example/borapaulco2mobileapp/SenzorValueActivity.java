@@ -116,8 +116,9 @@ public class SenzorValueActivity extends AppCompatActivity {
             public void run() {
                 getRequest(URL);
                 checkifThresholdIsReached();
+                handler.postDelayed(this,300000);
             }
-        },5000);
+        },300000);
     }
 
     private void checkifThresholdIsReached(){
