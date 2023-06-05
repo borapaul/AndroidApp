@@ -5,12 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import javax.mail.search.IntegerComparisonTerm;
+import com.example.borapaulco2mobileapp.utils.DBUtils;
 
 public class RegisterActivity extends AppCompatActivity {
 

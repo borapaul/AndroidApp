@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/chart_background"
     tools:context=".HistoryActivity">
 
 
@@ -13,6 +14,8 @@
         android:layout_width="110dp"
         android:layout_height="85dp"
         android:text="@string/backButton"
+        android:textColor = "@color/white"
+        android:background = "@drawable/button_drawable"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -24,9 +27,9 @@
         android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="468dp"
-        android:layout_marginTop="176dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

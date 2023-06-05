@@ -1,4 +1,4 @@
-package com.example.borapaulco2mobileapp;
+package com.example.borapaulco2mobileapp.utils;
 
 import android.content.ContentValues;
 import android.content.Context;

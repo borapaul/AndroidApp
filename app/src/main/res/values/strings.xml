@@ -25,8 +25,9 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="password">Password</string>
     <string name="setTheValues"> Set </string>
-    <string name= "dateOfTheMail"> Date </string>
-    <string name= "threshold"> Threshold </string>
-    <string name= "emailSwitch">Turn off Emails</string>
-    <string name= "idTextView" > ID</string>
+    <string name="dateOfTheMail"> Date </string>
+    <string name="threshold"> Threshold </string>
+    <string name="emailSwitch">Turn off Emails</string>
+    <string name="idTextView"> ID</string>
+    <string name="sendButton"> Send Email</string>
 </resources>

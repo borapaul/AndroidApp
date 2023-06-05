@@ -6,14 +6,13 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.borapaulco2mobileapp.domain.DataTableDetails;
 
 public class HistoryActivity extends AppCompatActivity {
     private TableLayout mTableLayout;

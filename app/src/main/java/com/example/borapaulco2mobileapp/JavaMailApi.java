@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.example.borapaulco2mobileapp.utils.MailsUtils;
+
 import java.util.Properties;
 
 import javax.mail.Message;

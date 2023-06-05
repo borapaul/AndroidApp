@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.borapaulco2mobileapp.utils.DBUtils;
+
 public class LogIn extends AppCompatActivity {
     private static final String DEFAULT_EMAIL_MESSAGE = "The threshold was reached, you must check the room.";
     private static final String DEFAULT_EMAIL_SUBJECT = "CO level RISING";

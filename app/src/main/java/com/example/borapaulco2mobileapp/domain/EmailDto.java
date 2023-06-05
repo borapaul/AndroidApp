@@ -1,4 +1,4 @@
-package com.example.borapaulco2mobileapp;
+package com.example.borapaulco2mobileapp.domain;
 
 public class EmailDto {
 

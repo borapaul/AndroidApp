@@ -1,4 +1,4 @@
-package com.example.borapaulco2mobileapp;
+package com.example.borapaulco2mobileapp.utils;
 
 public class MailsUtils {
 

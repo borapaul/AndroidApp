@@ -1,4 +1,4 @@
-package com.example.borapaulco2mobileapp;
+package com.example.borapaulco2mobileapp.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;
