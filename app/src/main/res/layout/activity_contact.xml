@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
-        android:layout_marginBottom="548dp"
+        android:layout_marginBottom="692dp"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toBottomOf="@+id/customSubjectValue" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/EmailTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Email Message"
@@ -31,24 +31,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.978" />
+        app:layout_constraintTop_toBottomOf="@+id/emailSubject"
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/emailSubject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
-        android:layout_marginBottom="684dp"
         android:ems="10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.079"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailAddressValue" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.003" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/SubjectTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Subject"

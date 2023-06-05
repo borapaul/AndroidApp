@@ -1,16 +1,13 @@
 package com.example.borapaulco2mobileapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.ActionMenuItemView;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.text.style.LineHeightSpan;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,22 +16,19 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.android.material.transition.MaterialSharedAxis;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,7 +47,6 @@ public class ChartOfDataActivity extends AppCompatActivity {
     private ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,19 +55,25 @@ public class ChartOfDataActivity extends AppCompatActivity {
                 .build());
 
         setContentView(R.layout.activity_chart_of_data);
-        mLineChart = (LineChart)findViewById(R.id.senzorValueLineChart);
+        mLineChart = (LineChart) findViewById(R.id.senzorValueLineChart);
         mLineChart.setTouchEnabled(true);
         mLineChart.setPinchZoom(true);
 
-        mLineChart.getXAxis().setValueFormatter(new ValueFormatter() {
+        YAxis yAxisLeft = mLineChart.getAxisLeft();
+        XAxis xAxis = mLineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
-            private final SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm", Locale.ENGLISH);
-
+        xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
+                return "";
+            }
+        });
 
-                long millis = TimeUnit.HOURS.toMillis((long) value);
-                return mFormat.format(new Date(millis));
+        yAxisLeft.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axisBase) {
+                return String.valueOf(value);
             }
         });
 
@@ -91,20 +90,22 @@ public class ChartOfDataActivity extends AppCompatActivity {
             @Override
             public void run() {
                 getRequest(url);
-                lineDataSet = new LineDataSet(dataArrayList,"Sensor Values");
-                LineData lineData = new LineData(new LineDataSet(getIntent().getParcelableExtra(sensorValue),"Sensor Values"));
+                lineDataSet = new LineDataSet(dataArrayList, "Sensor Values");
+                LineData lineData = new LineData(new LineDataSet(getIntent().getParcelableExtra(sensorValue), "Sensor Values"));
                 lineData.addDataSet(lineDataSet);
                 mLineChart.setData(lineData);
                 mLineChart.invalidate();
-                handler.postDelayed(this, 5000);
+                handler.postDelayed(this, 3000);
             }
-        },5000);
+        }, 3000);
     }
-    private void openMainActivity(){
+
+    private void openMainActivity() {
         Intent intent = new Intent(this, SenzorValueActivity.class);
         startActivity(intent);
     }
-    private void getRequest(String url){
+
+    private void getRequest(String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(
                 Request.Method.GET,
@@ -124,7 +125,8 @@ public class ChartOfDataActivity extends AppCompatActivity {
                             dataArrayList.add(entry);
                             counter++;
                         } catch (JSONException e) {
-                            System.out.println("Exception at parsing json");;
+                            System.out.println("Exception at parsing json");
+                            ;
                         }
                     }
                 }, new Response.ErrorListener() {

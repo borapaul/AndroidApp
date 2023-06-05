@@ -19,6 +19,8 @@ public class Settings extends AppCompatActivity {
     private Button mSetMailsDetails;
     private Button mSetThreshold;
 
+    private Button mContactButton;
+
     private String mailContact;
 
     private DataTableDetails dataTableDetails;
@@ -33,6 +35,7 @@ public class Settings extends AppCompatActivity {
         mSendTestEmailsButton = findViewById(R.id.sendEmailTest);
         mSetMailsDetails = findViewById(R.id.addNewAddress);
         mSetThreshold = findViewById(R.id.setThresholdButton);
+        mContactButton = findViewById(R.id.contactButton);
 
         Intent intent = getIntent();
 
@@ -66,6 +69,19 @@ public class Settings extends AppCompatActivity {
                 openTresholdActivity();
             }
         });
+
+        mContactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openContactActivity();
+            }
+        });
+    }
+
+    private void openContactActivity(){
+        Intent intent = new Intent(this, ContactActivity.class);
+        startActivity(intent);
+
     }
 
     private void openEmailSettings(){

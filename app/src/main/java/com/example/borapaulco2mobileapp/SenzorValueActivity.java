@@ -198,7 +198,6 @@ public class SenzorValueActivity extends AppCompatActivity {
             intent.putExtra(String.valueOf(i), dataTableDetailsList.get(i));
         }
         startActivity(intent);
-        finish();
     }
 
     private void getRequest(String url) {
