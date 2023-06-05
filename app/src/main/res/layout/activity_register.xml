@@ -67,17 +67,17 @@
 
     <Button
         android:id="@+id/registerActivityButton"
-        android:layout_width="158dp"
-        android:layout_height="113dp"
+        android:layout_width="110dp"
+        android:layout_height="85dp"
         android:background="@drawable/button_drawable"
         android:text="@string/register"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.973" />
+        app:layout_constraintVertical_bias="0.98" />
 
     <EditText
         android:id="@+id/registerPassword"

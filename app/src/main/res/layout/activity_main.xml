@@ -50,16 +50,16 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="110dp"
         android:layout_height="85dp"
-        android:text="@string/refreshButton"
         android:background="@drawable/button_drawable"
-        android:textStyle="italic"
+        android:text="@string/refreshButton"
         android:textColor="@color/white"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.053"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.98" />
 
     <Button
         android:id="@+id/chartButton"
@@ -67,15 +67,15 @@
         android:layout_width="110dp"
         android:layout_height="85dp"
         android:background="@drawable/button_drawable"
-        android:textStyle="italic"
-        android:textColor="@color/white"
         android:text="@string/chartButton"
+        android:textColor="@color/white"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.98" />
 
     <TextView
         android:id="@+id/sensorValue"
@@ -102,21 +102,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.838" />
 
+
     <Button
         android:id="@+id/emailSettings"
         android:layout_width="110dp"
         android:layout_height="85dp"
         android:background="@drawable/button_drawable"
-        android:textStyle="italic"
-        android:textColor="@color/white"
         android:text="@string/emailSettings"
+        android:textColor="@color/white"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintHorizontal_bias="0.946"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
+        app:layout_constraintVertical_bias="0.98" />
 
     <com.ekn.gruzer.gaugelibrary.HalfGauge
         android:id="@+id/halfGauge"

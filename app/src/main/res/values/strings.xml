@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BoraPaulCO2MobileApp</string>
+    <string name="app_name">COMonitoring</string>
     <string name="refreshButton">Refresh</string>
     <string name="sensorValueTextView">Sensor Value</string>
     <string name="backButton">Back</string>
