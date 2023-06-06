@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -46,6 +47,8 @@ public class SenzorValueActivity extends AppCompatActivity {
     private HalfGauge mHalfGauge;
     private Button mChartButton;
     private EditText mThresholdValueText;
+    private EditText mDelayOfEvaluation;
+
     private Switch mIsSendingEmails;
     private String sensorValue = "0";
 
@@ -53,6 +56,8 @@ public class SenzorValueActivity extends AppCompatActivity {
 
     private static final boolean IS_SENDING_EMAILS = true;
     private int threshold = DEFAULT_THRESHOLD;
+
+    private int delay = 3000;
     private boolean isSendingEmails = IS_SENDING_EMAILS;
     private List<DataTableDetails> dataTableDetailsList = new ArrayList<>();
     private EmailDto emailDto = new EmailDto();
@@ -71,6 +76,7 @@ public class SenzorValueActivity extends AppCompatActivity {
         mHalfGauge = findViewById(R.id.halfGauge);
         mIsSendingEmails = findViewById(R.id.switchEmailSending);
         mThresholdValueText = findViewById(R.id.thresholdValueText);
+        mDelayOfEvaluation = findViewById(R.id.delayOfEvaluationText);
 
         gaugeSettings();
         getRequest(URL);
@@ -112,15 +118,40 @@ public class SenzorValueActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                threshold = Integer.parseInt(mThresholdValueText.getText().toString());
+                try {
+                    threshold = Integer.parseInt(mThresholdValueText.getText().toString());
+                } catch (Exception e) {
+                    Toast.makeText(SenzorValueActivity.this, "Parsing exception, please provide valid data", Toast.LENGTH_LONG);
+                }
+            }
+        });
+
+        mDelayOfEvaluation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    delay = Integer.parseInt(mDelayOfEvaluation.getText().toString());
+                } catch (Exception e) {
+                    Toast.makeText(SenzorValueActivity.this, "Parsing exception, please provide valid data", Toast.LENGTH_LONG);
+                }
             }
         });
         mIsSendingEmails.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     isSendingEmails = false;
-                }else {
+                } else {
                     isSendingEmails = true;
                 }
             }
@@ -131,9 +162,9 @@ public class SenzorValueActivity extends AppCompatActivity {
             public void run() {
                 getRequest(URL);
                 checkifThresholdIsReached(threshold, isSendingEmails);
-                handler.postDelayed(this, 5000);
+                handler.postDelayed(this, delay);
             }
-        }, 5000);
+        }, delay);
     }
 
     private void gaugeSettings() {
@@ -179,9 +210,12 @@ public class SenzorValueActivity extends AppCompatActivity {
     }
 
     private void sendMail(String mailContact, String mailSubject, String mailMessage) {
+        try {
             JavaMailAPI javaMailAPI = new JavaMailAPI(this, mailContact, mailSubject, mailMessage);
             javaMailAPI.execute();
-
+        } catch (Exception e) {
+            Toast.makeText(this, "The email wasn't delivered", Toast.LENGTH_LONG);
+        }
     }
 
     private void openChartAcitvity() {

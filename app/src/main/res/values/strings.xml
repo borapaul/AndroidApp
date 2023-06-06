@@ -30,4 +30,5 @@
     <string name="emailSwitch">Turn off Emails</string>
     <string name="idTextView"> ID</string>
     <string name="sendButton"> Send Email</string>
+    <string name= "EvaluationTime"> Evaluation Time(Sec)</string>
 </resources>

@@ -1,11 +1,12 @@
 package com.example.borapaulco2mobileapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.borapaulco2mobileapp.domain.DataTableDetails;
 
@@ -26,6 +27,7 @@ public class Settings extends AppCompatActivity {
     private DataTableDetails dataTableDetails;
 
     private int listSize;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,37 +80,44 @@ public class Settings extends AppCompatActivity {
         });
     }
 
-    private void openContactActivity(){
+    private void openContactActivity() {
         Intent intent = new Intent(this, ContactActivity.class);
         startActivity(intent);
-
+        finish();
     }
 
-    private void openEmailSettings(){
-        Intent intent = new Intent(this,EmailSettings.class);
+    private void openEmailSettings() {
+        Intent intent = new Intent(this, EmailSettings.class);
         startActivity(intent);
+        finish();
     }
 
-    private void openTresholdActivity(){
+    private void openTresholdActivity() {
         Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
         Intent activityIntent = getIntent();
         intent.putExtra("listSize", listSize);
-        for(int i = 0 ; i < listSize; i++){
+        for (int i = 0; i < listSize; i++) {
             DataTableDetails dataTableDetailsFromIntent = activityIntent.getParcelableExtra(String.valueOf(i));
-            intent.putExtra(String.valueOf(i),dataTableDetailsFromIntent);
+            intent.putExtra(String.valueOf(i), dataTableDetailsFromIntent);
         }
         startActivity(intent);
+        finish();
     }
 
-    private void sendEmail(){
+    private void sendEmail() {
+        try {
             //Send Mail
-            JavaMailAPI javaMailAPI = new JavaMailAPI(this,mailContact,TEST_MAIL_SUBJECT,TEST_MAIL_MESSAGE);
+            JavaMailAPI javaMailAPI = new JavaMailAPI(this, mailContact, TEST_MAIL_SUBJECT, TEST_MAIL_MESSAGE);
             javaMailAPI.execute();
+        } catch (Exception e) {
+            Toast.makeText(this, "The email wasn't delivered", Toast.LENGTH_LONG);
+        }
     }
 
-    private void openMainActivity(){
+    private void openMainActivity() {
         Intent intent = new Intent(this, SenzorValueActivity.class);
         startActivity(intent);
+        finish();
     }
 
 }

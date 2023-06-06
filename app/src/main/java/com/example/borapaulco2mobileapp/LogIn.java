@@ -15,8 +15,6 @@ public class LogIn extends AppCompatActivity {
     private static final String DEFAULT_EMAIL_MESSAGE = "The threshold was reached, you must check the room.";
     private static final String DEFAULT_EMAIL_SUBJECT = "CO level RISING";
 
-    private static final int LOG_IN_ACTIVITY_CODE = 1;
-
     private Button mLoginButton;
     private EditText mEmailEditText;
     private EditText mPasswordEditText;
