@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class ContactActivity extends AppCompatActivity {
 
@@ -52,7 +53,11 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     private void sendEmail(String email, String subject, String message){
-        JavaMailAPI javaMailAPI = new JavaMailAPI(this, email,subject,message);
-        javaMailAPI.execute();
+        try {
+            JavaMailAPI javaMailAPI = new JavaMailAPI(this, email, subject, message);
+            javaMailAPI.execute();
+        }catch (Exception e){
+            Toast.makeText(ContactActivity.this,"The email wasn't delivered", Toast.LENGTH_LONG);
+        }
     }
 }

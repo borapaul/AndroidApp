@@ -54,6 +54,7 @@ public class HistoryActivity extends AppCompatActivity {
     private void openMainActivity() {
         Intent intent = new Intent(this, Settings.class);
         startActivity(intent);
+        finish();
     }
 
 

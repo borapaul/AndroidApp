@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,11 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class ChartOfDataActivity extends AppCompatActivity {
     private static String url = "https://thingspeak.com/channels/2118120/fields/1.json?api_key=DGHTAT9MKCKX4140&results=2";
@@ -45,6 +42,7 @@ public class ChartOfDataActivity extends AppCompatActivity {
     private LineDataSet lineDataSet;
 
     private ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+    private long delay = 3000;
 
 
     @Override
@@ -81,10 +79,9 @@ public class ChartOfDataActivity extends AppCompatActivity {
         mBackToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openMainActivity();
+                openMainActivity(getIntent().getStringExtra("emailAddress"));
             }
         });
-
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -95,14 +92,16 @@ public class ChartOfDataActivity extends AppCompatActivity {
                 lineData.addDataSet(lineDataSet);
                 mLineChart.setData(lineData);
                 mLineChart.invalidate();
-                handler.postDelayed(this, 3000);
+                handler.postDelayed(this, delay);
             }
-        }, 3000);
+        }, delay);
     }
 
-    private void openMainActivity() {
+    private void openMainActivity(String emailAddress) {
         Intent intent = new Intent(this, SenzorValueActivity.class);
+        intent.putExtra("emailAddress",emailAddress);
         startActivity(intent);
+        finish();
     }
 
     private void getRequest(String url) {
@@ -132,7 +131,7 @@ public class ChartOfDataActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // Handle error
+                Toast.makeText(ChartOfDataActivity.this, "Can't send reques to ThingSpeak", Toast.LENGTH_LONG);
             }
         });
         queue.add(stringRequest);

@@ -17,6 +17,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mEmailEditText;
     private EditText mPasswordEditText;
     private EditText mConfirmPasswordEditText;
+    private Button mBackToLogin;
     private DBUtils db;
 
 
@@ -28,8 +29,15 @@ public class RegisterActivity extends AppCompatActivity {
         mEmailEditText = findViewById(R.id.emailAddresValue);
         mPasswordEditText = findViewById(R.id.registerPassword);
         mConfirmPasswordEditText = findViewById(R.id.registerConfirmPassword);
+        mBackToLogin = findViewById(R.id.backToLogin);
         db = new DBUtils(this);
 
+        mBackToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLoginActivity();
+            }
+        });
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,5 +67,10 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    public void openLoginActivity(){
+        Intent intent = new Intent(this,LogIn.class);
+        startActivity(intent);
+        finish();
     }
 }

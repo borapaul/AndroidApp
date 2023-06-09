@@ -40,7 +40,9 @@ import java.util.List;
 public class SenzorValueActivity extends AppCompatActivity {
 
     private static final String URL = "https://thingspeak.com/channels/2118120/fields/1.json?api_key=DGHTAT9MKCKX4140&results=2";
-
+    private static final int MULTIPLIER = 1000;
+    private static final String DEFAULT_EMAIL_MESSAGE = "The threshold was reached, you must check the room.";
+    private static final String DEFAULT_EMAIL_SUBJECT = "CO level RISING";
     private TextView mSensorValueTextView;
     private Button mRefreshButton;
     private Button mEmailSettingsButton;
@@ -57,7 +59,7 @@ public class SenzorValueActivity extends AppCompatActivity {
     private static final boolean IS_SENDING_EMAILS = true;
     private int threshold = DEFAULT_THRESHOLD;
 
-    private int delay = 3000;
+    private int delay = 10000;
     private boolean isSendingEmails = IS_SENDING_EMAILS;
     private List<DataTableDetails> dataTableDetailsList = new ArrayList<>();
     private EmailDto emailDto = new EmailDto();
@@ -98,13 +100,15 @@ public class SenzorValueActivity extends AppCompatActivity {
         mChartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openChartAcitvity();
+                openChartAcitvity(getIntent().getStringExtra("emailAddress"));
             }
         });
 
         emailDto.setEmail(intent.getStringExtra("emailAddress"));
-        emailDto.setMessage(intent.getStringExtra("emailMessage"));
-        emailDto.setSubject(intent.getStringExtra("emailSubject"));
+        emailDto.setMessage(DEFAULT_EMAIL_MESSAGE + "\n"+
+                "The thresold is : " + threshold + "\n" +
+                "Evaluation Time : " + delay);
+        emailDto.setSubject(DEFAULT_EMAIL_SUBJECT);
         mThresholdValueText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -120,6 +124,9 @@ public class SenzorValueActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 try {
                     threshold = Integer.parseInt(mThresholdValueText.getText().toString());
+                    emailDto.setMessage(DEFAULT_EMAIL_MESSAGE + "\n"+
+                            "Threshold : " + threshold + "\n" +
+                            "Evaluation Time : " + delay);
                 } catch (Exception e) {
                     Toast.makeText(SenzorValueActivity.this, "Parsing exception, please provide valid data", Toast.LENGTH_LONG);
                 }
@@ -140,7 +147,10 @@ public class SenzorValueActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 try {
-                    delay = Integer.parseInt(mDelayOfEvaluation.getText().toString());
+                    delay = Integer.parseInt(mDelayOfEvaluation.getText().toString()) * MULTIPLIER;
+                    emailDto.setMessage(DEFAULT_EMAIL_MESSAGE + "\n"+
+                            "Threshold : " + threshold + "\n" +
+                            "Evaluation Time : " + delay/1000 + " seconds");
                 } catch (Exception e) {
                     Toast.makeText(SenzorValueActivity.this, "Parsing exception, please provide valid data", Toast.LENGTH_LONG);
                 }
@@ -218,10 +228,13 @@ public class SenzorValueActivity extends AppCompatActivity {
         }
     }
 
-    private void openChartAcitvity() {
+    private void openChartAcitvity(String mailContact) {
         Intent intent = new Intent(this, ChartOfDataActivity.class);
         intent.putExtra("sensorValue", sensorValue);
+        intent.putExtra("emailAddress", mailContact);
+        intent.putExtra("listSize", dataTableDetailsList.size());
         startActivity(intent);
+        finish();
     }
 
     private void openMailSettingsActivity(String mailContact) {

@@ -43,5 +43,6 @@ public class EmailSettings extends AppCompatActivity {
         intent.putExtra("emailMessage", mEmailMessageValue.getText().toString());
         intent.putExtra("emailSubject", mEmailSubjectValue.getText().toString());
         startActivity(intent);
+        finish();
     }
 }

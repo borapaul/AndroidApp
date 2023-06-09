@@ -12,9 +12,6 @@ import android.widget.Toast;
 import com.example.borapaulco2mobileapp.utils.DBUtils;
 
 public class LogIn extends AppCompatActivity {
-    private static final String DEFAULT_EMAIL_MESSAGE = "The threshold was reached, you must check the room.";
-    private static final String DEFAULT_EMAIL_SUBJECT = "CO level RISING";
-
     private Button mLoginButton;
     private EditText mEmailEditText;
     private EditText mPasswordEditText;
@@ -50,8 +47,6 @@ public class LogIn extends AppCompatActivity {
                     if (db.loginCheck(email,password)){
                         Intent intent = new Intent(getApplicationContext(), SenzorValueActivity.class);
                         intent.putExtra("emailAddress", mEmailEditText.getText().toString());
-                        intent.putExtra("emailMessage",DEFAULT_EMAIL_MESSAGE);
-                        intent.putExtra("emailSubject",DEFAULT_EMAIL_SUBJECT);
                         startActivity(intent);
                         finish();
                     }
@@ -65,5 +60,6 @@ public class LogIn extends AppCompatActivity {
     public void openRegisterActivity(){
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
+        finish();
     }
 }
