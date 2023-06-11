@@ -36,7 +36,7 @@ public class Settings extends AppCompatActivity {
 
         mSendTestEmailsButton = findViewById(R.id.sendEmailTest);
         mSetMailsDetails = findViewById(R.id.addNewAddress);
-        mSetThreshold = findViewById(R.id.setThresholdButton);
+        mSetThreshold = findViewById(R.id.mailHistory);
         mContactButton = findViewById(R.id.contactButton);
 
         Intent intent = getIntent();
