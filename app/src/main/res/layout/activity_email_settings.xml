@@ -8,14 +8,27 @@
     tools:context=".EmailSettings">
 
     <Button
-        android:id="@+id/backToSensorValueActivity"
+        android:id="@+id/setEmailsButton"
         android:layout_width="110dp"
         android:layout_height="85dp"
         android:background="@drawable/button_drawable"
         android:text="@string/setTheValues"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.053"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.98" />
+
+    <Button
+        android:id="@+id/backToMainActiviy"
+        android:layout_width="110dp"
+        android:layout_height="85dp"
+        android:background="@drawable/button_drawable"
+        android:text="@string/backButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.946"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.98" />
@@ -23,7 +36,7 @@
     <EditText
         android:id="@+id/emailAddressValue"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,10 +49,11 @@
     <EditText
         android:id="@+id/customEmailMessageValue"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="56dp"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="Custom Message"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.114"
@@ -59,9 +73,10 @@
     <EditText
         android:id="@+id/customSubjectValue"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="56dp"
         android:ems="10"
+        android:hint="Custom subject"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.114"
         app:layout_constraintStart_toStartOf="parent"

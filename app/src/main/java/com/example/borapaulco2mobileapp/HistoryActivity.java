@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.borapaulco2mobileapp.domain.DataTableDetails;
 
 public class HistoryActivity extends AppCompatActivity {
+    private String mailContact;
     private TableLayout mTableLayout;
     private Button mBackButton;
     @Override
@@ -24,7 +25,7 @@ public class HistoryActivity extends AppCompatActivity {
         mTableLayout = findViewById(R.id.mainTable);
         mBackButton = findViewById(R.id.backToSettings);
 
-
+        mailContact = getIntent().getStringExtra("emailAddress");
 
         Intent intent = getIntent();
         TableRow tableRow = new TableRow(this);
@@ -52,7 +53,8 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void openMainActivity() {
-        Intent intent = new Intent(this, Settings.class);
+        Intent intent = new Intent(this, SenzorValueActivity.class);
+        intent.putExtra("emailAddress",mailContact);
         startActivity(intent);
         finish();
     }

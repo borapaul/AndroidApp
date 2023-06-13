@@ -125,7 +125,7 @@ public class SenzorValueActivity extends AppCompatActivity {
                 try {
                     threshold = Integer.parseInt(mThresholdValueText.getText().toString());
                     emailDto.setMessage(DEFAULT_EMAIL_MESSAGE + "\n"+
-                            "Threshold : " + threshold + "\n" +
+                            "Thraeshold : " + threshold + "\n" +
                             "Evaluation Time : " + delay);
                 } catch (Exception e) {
                     Toast.makeText(SenzorValueActivity.this, "Parsing exception, please provide valid data", Toast.LENGTH_LONG);

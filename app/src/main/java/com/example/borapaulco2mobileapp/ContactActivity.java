@@ -13,6 +13,8 @@ public class ContactActivity extends AppCompatActivity {
 
     private static final String EMAIL = "coappnotification@gmail.com";
 
+    private String mailContact;
+
     private Button mBackButton;
 
     private Button mSendButton;
@@ -31,6 +33,8 @@ public class ContactActivity extends AppCompatActivity {
         mEmaiMessageText = findViewById(R.id.emailMessage);
         mEmaiSubjectText = findViewById(R.id.emailSubject);
 
+        mailContact = getIntent().getStringExtra("emailAddress");
+
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,14 +45,15 @@ public class ContactActivity extends AppCompatActivity {
         mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSettingsActivity();
+                openMainActivity();
             }
         });
 
     }
 
-    private void openSettingsActivity(){
-        Intent intent = new Intent(this, Settings.class);
+    private void openMainActivity(){
+        Intent intent = new Intent(this, SenzorValueActivity.class);
+        intent.putExtra("emailAddress",mailContact);
         startActivity(intent);
     }
 

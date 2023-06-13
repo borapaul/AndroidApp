@@ -68,7 +68,7 @@ public class Settings extends AppCompatActivity {
         mSetThreshold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openTresholdActivity();
+                openHistoryActivity();
             }
         });
 
@@ -82,19 +82,22 @@ public class Settings extends AppCompatActivity {
 
     private void openContactActivity() {
         Intent intent = new Intent(this, ContactActivity.class);
+        intent.putExtra("emailAddress",mailContact);
         startActivity(intent);
         finish();
     }
 
     private void openEmailSettings() {
         Intent intent = new Intent(this, EmailSettings.class);
+        intent.putExtra("emailAddress",mailContact);
         startActivity(intent);
         finish();
     }
 
-    private void openTresholdActivity() {
+    private void openHistoryActivity() {
         Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
         Intent activityIntent = getIntent();
+        intent.putExtra("emailAddress",mailContact);
         intent.putExtra("listSize", listSize);
         for (int i = 0; i < listSize; i++) {
             DataTableDetails dataTableDetailsFromIntent = activityIntent.getParcelableExtra(String.valueOf(i));
@@ -116,6 +119,7 @@ public class Settings extends AppCompatActivity {
 
     private void openMainActivity() {
         Intent intent = new Intent(this, SenzorValueActivity.class);
+        intent.putExtra("emailAddress",mailContact);
         startActivity(intent);
         finish();
     }

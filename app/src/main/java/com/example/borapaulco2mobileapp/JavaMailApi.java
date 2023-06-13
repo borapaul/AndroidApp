@@ -35,34 +35,27 @@ class JavaMailAPI extends AsyncTask<Void,Void,Void>{
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        //Show progress dialog while sending email
         mProgressDialog = ProgressDialog.show(mContext,"Sending message", "Please wait...",false,false);
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        //Dismiss progress dialog when message successfully send
         mProgressDialog.dismiss();
 
-        //Show success toast
         Toast.makeText(mContext,"Message Sent",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected Void doInBackground(Void... params) {
-        //Creating properties
         Properties props = new Properties();
 
-        //Configuring properties for gmail
-        //If you are not using gmail you may need to change the values
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "465");
 
-        //Creating a new session
         mSession = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     //Authenticating the password
@@ -72,18 +65,16 @@ class JavaMailAPI extends AsyncTask<Void,Void,Void>{
                 });
 
         try {
-            //Creating MimeMessage object
             MimeMessage mm = new MimeMessage(mSession);
 
-            //Setting sender address
             mm.setFrom(new InternetAddress(MailsUtils.EMAIL));
-            //Adding receiver
+
             mm.addRecipient(Message.RecipientType.TO, new InternetAddress(mEmail));
-            //Adding subject
+
             mm.setSubject(mSubject);
-            //Adding message
+
             mm.setText(mMessage);
-            //Sending email
+
             Transport.send(mm);
 
         } catch (MessagingException e) {
